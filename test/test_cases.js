@@ -10,7 +10,7 @@
     var getLabels;
     getLabels = function(results) {
       return results.map(function(r) {
-        return r.label;
+        return r.obj.label;
       });
     };
     describe('with basic testCase', function() {
@@ -26,9 +26,9 @@
       console.log('       --- TEST CASE ---');
       console.log(testCase.chart);
       it('should return the nearest neighbor', function() {
-        knn(profile1, objects)[0].label.should.eql('C');
-        knn(profile2, objects)[0].label.should.eql('E');
-        return knn(profile3, objects)[0].label.should.eql('J');
+        knn(profile1, objects)[0].obj.label.should.eql('C');
+        knn(profile2, objects)[0].obj.label.should.eql('E');
+        return knn(profile3, objects)[0].obj.label.should.eql('J');
       });
       it('should return 3 nearest neighbors, sorted by distance', function() {
         getLabels(knn(profile1, objects, options)).should.eql(['C', 'H', 'A']);
@@ -53,9 +53,9 @@
         standardize: true
       };
       it('should return the nearest neighbor', function() {
-        knn(profile1, objects, options)[0].label.should.eql('C');
-        knn(profile2, objects, options)[0].label.should.eql('E');
-        return knn(profile3, objects, options)[0].label.should.eql('J');
+        knn(profile1, objects, options)[0].obj.label.should.eql('C');
+        knn(profile2, objects, options)[0].obj.label.should.eql('E');
+        return knn(profile3, objects, options)[0].obj.label.should.eql('J');
       });
       it('should return 3 nearest neighbors, sorted by distance', function() {
         getLabels(knn(profile1, objects, options)).should.eql(['C', 'H', 'A']);

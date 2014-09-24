@@ -4,7 +4,7 @@ knn = require '../lib/main'
 describe 'K Nearest Neighbor', ->
   getLabels = (results) ->
     results.map (r) ->
-      r.label
+      r.obj.label
   describe 'with basic testCase', ->
     testCase = require './test_case_simple'
     objects = testCase.objects
@@ -17,9 +17,9 @@ describe 'K Nearest Neighbor', ->
     console.log testCase.chart
 
     it 'should return the nearest neighbor', ->
-      knn(profile1, objects)[0].label.should.eql('C')
-      knn(profile2, objects)[0].label.should.eql('E')
-      knn(profile3, objects)[0].label.should.eql('J')
+      knn(profile1, objects)[0].obj.label.should.eql('C')
+      knn(profile2, objects)[0].obj.label.should.eql('E')
+      knn(profile3, objects)[0].obj.label.should.eql('J')
     it 'should return 3 nearest neighbors, sorted by distance', ->
       getLabels(knn(profile1, objects, options)).should.eql(['C', 'H', 'A'])
       getLabels(knn(profile2, objects, options)).should.eql(['E', 'F', 'A']) #D,G,H tie
@@ -38,9 +38,9 @@ describe 'K Nearest Neighbor', ->
     options = k: 3, standardize: true
 
     it 'should return the nearest neighbor', ->
-      knn(profile1, objects, options)[0].label.should.eql('C')
-      knn(profile2, objects, options)[0].label.should.eql('E')
-      knn(profile3, objects, options)[0].label.should.eql('J')
+      knn(profile1, objects, options)[0].obj.label.should.eql('C')
+      knn(profile2, objects, options)[0].obj.label.should.eql('E')
+      knn(profile3, objects, options)[0].obj.label.should.eql('J')
     it 'should return 3 nearest neighbors, sorted by distance', ->
       getLabels(knn(profile1, objects, options)).should.eql(['C', 'H', 'A'])
       getLabels(knn(profile2, objects, options)).should.eql(['E', 'F', 'A'])

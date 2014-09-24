@@ -66,7 +66,10 @@ module.exports = (subject, objects, options) ->
 
   # Copy objects in sorted order using sortMap
   sortedObjects = for i in sortMap
-    objects_filtered[i.index]
+    {
+      obj: objects_filtered[i.index],
+      dist: i.dist
+    }
 
   # Slice top k from sortedObjects
   if options?.k then sortedObjects.slice(0, options.k) else sortedObjects
