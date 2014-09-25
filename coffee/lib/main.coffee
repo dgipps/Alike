@@ -65,7 +65,7 @@ module.exports = (subject, objects, options) ->
   sortMap = stable distances, (a,b) -> a.dist - b.dist
 
   # Copy objects in sorted order using sortMap
-  if options and options.distFlag
+  if options and options.hasOwnProperty("distFlag") and options.distFlag
     sortedObjects = for i in sortMap
       {
         obj: objects_filtered[i.index],
