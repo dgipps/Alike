@@ -73,7 +73,7 @@
         }).should.throwError("Missing attribute 'a' in '{\"b\":3}'");
       });
     });
-    return describe('for simple cases', function() {
+    describe('for simple cases', function() {
       it('should return an empty object/array if no Y', function() {
         return nearestNeighbor({
           a: 1
@@ -89,7 +89,8 @@
             a: 2
           }
         ], {
-          k: 1
+          k: 1,
+          distFlag: true
         }).should.eql([
           {
             obj: {
@@ -111,7 +112,8 @@
             a: 0
           }
         ], {
-          k: 2
+          k: 2,
+          distFlag: true
         }).should.eql([
           {
             obj: {
@@ -141,6 +143,7 @@
           }
         ], {
           k: 1,
+          distFlag: true,
           key: function(o) {
             return o.x;
           }
@@ -174,6 +177,7 @@
           }
         ], {
           k: 1,
+          distFlag: true,
           key: function(o) {
             return o.x.y;
           }
@@ -203,6 +207,7 @@
           }
         ], {
           k: 2,
+          distFlag: true,
           filter: function(o) {
             return o.a > 0;
           }
@@ -217,6 +222,184 @@
               a: 3
             },
             dist: 4
+          }
+        ]);
+      });
+      it('should accept return empty array if filters all', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            a: 1
+          }, {
+            a: 3
+          }, {
+            a: 0
+          }
+        ], {
+          k: 2,
+          distFlag: true,
+          filter: function(o) {
+            return o.a > 10;
+          }
+        }).should.eql([]);
+      });
+      return it('should default to unlimited if no k is provided', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            a: 1
+          }, {
+            a: 2
+          }, {
+            a: 3
+          }
+        ], {
+          distFlag: true
+        }).should.eql([
+          {
+            obj: {
+              a: 1
+            },
+            dist: 0
+          }, {
+            obj: {
+              a: 2
+            },
+            dist: 1
+          }, {
+            obj: {
+              a: 3
+            },
+            dist: 4
+          }
+        ]);
+      });
+    });
+    return describe('for simple cases with no flag', function() {
+      it('should return an empty object/array if no Y', function() {
+        return nearestNeighbor({
+          a: 1
+        }, []).should.eql([]);
+      });
+      it('should return nearest neighbor with single dimension', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            a: 1
+          }, {
+            a: 2
+          }
+        ], {
+          k: 1
+        }).should.eql([
+          {
+            a: 1
+          }
+        ]);
+      });
+      it('should return 2 nearest neighbors (in order) with single dimension', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            a: 1
+          }, {
+            a: 3
+          }, {
+            a: 0
+          }
+        ], {
+          k: 2
+        }).should.eql([
+          {
+            a: 1
+          }, {
+            a: 0
+          }
+        ]);
+      });
+      it('should accept a key parameter for objects', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            x: {
+              a: 1
+            }
+          }, {
+            x: {
+              a: 2
+            }
+          }
+        ], {
+          k: 1,
+          key: function(o) {
+            return o.x;
+          }
+        }).should.eql([
+          {
+            x: {
+              a: 1
+            }
+          }
+        ]);
+      });
+      it('should accept a key parameter for nested objects', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            x: {
+              y: {
+                a: 1
+              }
+            }
+          }, {
+            x: {
+              y: {
+                a: 2
+              }
+            }
+          }
+        ], {
+          k: 1,
+          key: function(o) {
+            return o.x.y;
+          }
+        }).should.eql([
+          {
+            x: {
+              y: {
+                a: 1
+              }
+            }
+          }
+        ]);
+      });
+      it('should accept filter parameter', function() {
+        return nearestNeighbor({
+          a: 1
+        }, [
+          {
+            a: 1
+          }, {
+            a: 3
+          }, {
+            a: 0
+          }
+        ], {
+          k: 2,
+          filter: function(o) {
+            return o.a > 0;
+          }
+        }).should.eql([
+          {
+            a: 1
+          }, {
+            a: 3
           }
         ]);
       });
@@ -251,20 +434,11 @@
           }
         ]).should.eql([
           {
-            obj: {
-              a: 1
-            },
-            dist: 0
+            a: 1
           }, {
-            obj: {
-              a: 2
-            },
-            dist: 1
+            a: 2
           }, {
-            obj: {
-              a: 3
-            },
-            dist: 4
+            a: 3
           }
         ]);
       });

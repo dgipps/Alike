@@ -65,11 +65,16 @@ module.exports = (subject, objects, options) ->
   sortMap = stable distances, (a,b) -> a.dist - b.dist
 
   # Copy objects in sorted order using sortMap
-  sortedObjects = for i in sortMap
-    {
-      obj: objects_filtered[i.index],
-      dist: i.dist
-    }
+  if options and options.distFlag
+    sortedObjects = for i in sortMap
+      {
+        obj: objects_filtered[i.index],
+        dist: i.dist
+      }
+  else
+    sortedObjects = for i in sortMap
+      objects_filtered[i.index]
+
 
   # Slice top k from sortedObjects
   if options?.k then sortedObjects.slice(0, options.k) else sortedObjects
